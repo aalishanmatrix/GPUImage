@@ -177,7 +177,8 @@
 }
 
 // ARC forbids explicit message send of 'release'; since iOS 6 even for dispatch_release() calls: stripping it out in that case is required.
-#if ( (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0) || (!defined(__IPHONE_6_0)) )
+// Ronald: 6.0 and 6.1 seem to support dispatch_release just fine. By not calling dispatch_release imageUpdateSemaphore seems to leak
+//#if ( (__IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_6_0) || (!defined(__IPHONE_6_0)) )
 - (void)dealloc;
 {
     if (imageUpdateSemaphore != NULL)
@@ -185,7 +186,7 @@
         dispatch_release(imageUpdateSemaphore);
     }
 }
-#endif
+//#endif
 
 #pragma mark -
 #pragma mark Image rendering
